@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculation of the difference</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <figure class="container">
+      <article class="container-app">
+        <h1>Calculation of the difference</h1>
+
+        <!-- Step 1 -->
+        <h2>คำนวณส่วนต่าง</h2>
+
+        <p>Recurring Amount</p>
+        <input
+          type="number"
+          id="recurringAmount"
+          step="0.01"
+          min="0"
+          placeholder="เช่น 3000"
+        />
+
+        <p>Remaining Days</p>
+        <input
+          type="number"
+          id="remainingDays"
+          step="1"
+          min="0"
+          placeholder="เช่น 10"
+        />
+
+        <button onclick="calculatePriceDifference()" class="send">
+          Calculate Difference
+        </button>
+
+        <p id="result_dailyPrice"></p>
+        <p id="result_priceDifference"></p>
+
+        <hr />
+      </article>
+
+      <article class="container-app">
+        <h2>คำนวณราคา Contract</h2>
+
+        <p>Product Price</p>
+        <input
+          type="number"
+          id="productPrice"
+          step="0.01"
+          min="0"
+          placeholder="เช่น 2500"
+        />
+
+        <p>Number of Months</p>
+        <input
+          type="number"
+          id="numberOfMonths"
+          step="1"
+          min="1"
+          placeholder="เช่น 12"
+        />
+
+        <button onclick="calculateContract()" class="send">
+          Calculate Contract Price
+        </button>
+
+        <p id="result_contractPrice"></p>
+
+        <button onclick="calculateContractTotal()" class="send">
+          Contract Price + Difference
+        </button>
+
+        <p id="result_totalPrice"></p>
+
+        <button class="reset">Reset</button>
+      </article>
+    </figure>
+
+    <script src="app.js"></script>
+  </body>
+</html>

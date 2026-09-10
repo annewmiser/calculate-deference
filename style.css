@@ -1,0 +1,383 @@
+/* ==============================
+   Base
+============================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+
+  --color-primary: #181d27;
+  --color-accent: #fb6514;
+
+  --color-text: #181d27;
+  --color-text-muted: #667085;
+
+  --color-border: #e4e7ec;
+  --color-border-focus: #fb6514;
+
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
+  --color-success-text: #166534;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --shadow-card:
+    0 1px 2px rgba(16, 24, 40, 0.04), 0 12px 32px rgba(16, 24, 40, 0.08);
+}
+
+html {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* ==============================
+   Layout
+============================== */
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  padding: 48px 20px;
+}
+
+.container-app {
+  width: 100%;
+  max-width: 720px;
+
+  background: var(--color-surface);
+
+  padding: 40px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+}
+
+/* ==============================
+   Typography
+============================== */
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  margin-bottom: 10px;
+
+  letter-spacing: -0.03em;
+}
+
+h1::after {
+  content: "";
+
+  display: block;
+
+  width: 48px;
+  height: 4px;
+
+  margin-top: 16px;
+
+  background: var(--color-accent);
+
+  border-radius: 99px;
+}
+
+h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+
+  margin-top: 32px;
+  margin-bottom: 24px;
+
+  color: var(--color-primary);
+}
+
+p {
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  margin-bottom: 8px;
+
+  color: var(--color-text-muted);
+}
+
+/* ==============================
+   Input
+============================== */
+
+input {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  background: #ffffff;
+
+  color: var(--color-text);
+
+  font-size: 1rem;
+
+  outline: none;
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+input::placeholder {
+  color: #98a2b3;
+}
+
+input:hover {
+  border-color: #cbd0d8;
+}
+
+input:focus {
+  border-color: var(--color-border-focus);
+
+  box-shadow: 0 0 0 3px rgba(251, 101, 20, 0.12);
+}
+
+input:disabled {
+  background: #f2f4f7;
+  cursor: not-allowed;
+}
+
+/* Remove number arrows */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+/* ==============================
+   Buttons
+============================== */
+
+button {
+  min-height: 46px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: var(--radius-sm);
+
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Main action */
+
+.send {
+  width: 30%;
+
+  margin-top: 4px;
+  margin-bottom: 20px;
+
+  background: var(--color-primary);
+
+  color: #ffffff;
+}
+
+.send:hover {
+  background: #252b36;
+
+  box-shadow: 0 5px 14px rgba(24, 29, 39, 0.18);
+}
+
+.send:focus-visible {
+  outline: 3px solid rgba(251, 101, 20, 0.3);
+  outline-offset: 2px;
+}
+
+/* Reset */
+
+.reset {
+  width: 100%;
+
+  margin-top: 12px;
+
+  background: #ffffff;
+
+  color: var(--color-text-muted);
+
+  border: 1px solid var(--color-border);
+}
+
+.reset:hover {
+  background: #f9fafb;
+
+  color: var(--color-text);
+
+  border-color: #cbd0d8;
+}
+
+/* ==============================
+   Result
+============================== */
+
+#result_dailyPrice,
+#result_priceDifference,
+#result_contractPrice,
+#result_totalPrice {
+  width: 100%;
+
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 12px 14px;
+
+  margin-top: 0;
+  margin-bottom: 10px;
+
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius-sm);
+
+  background: var(--color-success-bg);
+
+  color: var(--color-success-text);
+
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* ซ่อน result box ถ้ายังไม่มีข้อความ */
+
+#result_dailyPrice:empty,
+#result_priceDifference:empty,
+#result_contractPrice:empty,
+#result_totalPrice:empty {
+  display: none;
+}
+
+/* Total Price เด่นกว่าผลลัพธ์อื่น */
+
+#result_totalPrice:not(:empty) {
+  min-height: 60px;
+
+  border-color: rgba(251, 101, 20, 0.3);
+
+  background: rgba(251, 101, 20, 0.08);
+
+  color: #c2410c;
+
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ==============================
+   Divider
+============================== */
+
+hr {
+  border: none;
+
+  height: 1px;
+
+  margin: 34px 0;
+
+  background: var(--color-border);
+}
+
+/* ==============================
+   Mobile
+============================== */
+
+@media (max-width: 640px) {
+  .container {
+    align-items: flex-start;
+
+    padding: 20px 12px;
+  }
+
+  .container-app {
+    padding: 24px 18px;
+
+    border-radius: 14px;
+  }
+
+  h1 {
+    font-size: 1.65rem;
+  }
+
+  h2 {
+    margin-top: 26px;
+
+    font-size: 1.05rem;
+  }
+
+  input {
+    height: 46px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* ==============================
+   Reduced Motion
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
