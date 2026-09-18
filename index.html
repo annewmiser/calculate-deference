@@ -1,84 +1,90 @@
 <!doctype html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculation of the difference</title>
+    <title>คำนวณส่วนต่างแพ็กเกจ</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <figure class="container">
+    <header class="mode-selector">
+      <label for="calculationMode">โหมดการคำนวณ</label>
+      <select id="calculationMode">
+        <option value="monthly">รายเดือน: เปลี่ยนแพ็กเกจ</option>
+        <option value="single-package">การคำนวณส่วนต่าง package เดียว</option>
+      </select>
+    </header>
+
+    <main id="monthlyMode" class="container monthly-container">
       <article class="container-app">
-        <h1>Calculation of the difference</h1>
+        <h1>คำนวณส่วนต่างแพ็กเกจ</h1>
+        <h2>โหมดรายเดือน</h2>
+        <p class="monthly-description">ใช้ฐานสัญญา 30 วัน และคิด VAT 7% จากส่วนต่าง</p>
+        <form id="monthlyForm" novalidate>
+          <label for="oldProductPrice">ราคาแพ็กเกจเดิมต่อเดือน (ก่อน VAT)</label>
+          <input type="number" id="oldProductPrice" min="0" step="0.01" placeholder="เช่น 700" required />
 
-        <!-- Step 1 -->
-        <h2>คำนวณส่วนต่าง</h2>
+          <label for="newProductPrice">ราคาแพ็กเกจใหม่ต่อเดือน (ก่อน VAT)</label>
+          <input type="number" id="newProductPrice" min="0" step="0.01" placeholder="เช่น 1000" required />
 
-        <p>Recurring Amount</p>
-        <input
-          type="number"
-          id="recurringAmount"
-          step="0.01"
-          min="0"
-          placeholder="เช่น 3000"
-        />
+          <label for="monthlyRemainingDays">จำนวนวันที่เหลือในรอบบิล (0–30 วัน)</label>
+          <input type="number" id="monthlyRemainingDays" min="0" max="30" step="1" placeholder="เช่น 15" required />
 
-        <p>Remaining Days</p>
-        <input
-          type="number"
-          id="remainingDays"
-          step="1"
-          min="0"
-          placeholder="เช่น 10"
-        />
+          <button type="submit" class="send">คำนวณส่วนต่าง</button>
+          <p id="monthlyError" class="error-message" role="alert"></p>
 
-        <button onclick="calculatePriceDifference()" class="send">
-          Calculate Difference
-        </button>
+          <section id="monthlyResults" class="monthly-results" aria-live="polite" aria-atomic="true" hidden>
+            <h2>ผลการคำนวณ</h2>
+            <dl>
+              <div><dt>ราคาแพ็กเกจเดิมต่อวัน</dt><dd data-monthly-result="oldDailyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจใหม่ต่อวัน</dt><dd data-monthly-result="newDailyPrice"></dd></div>
+              <div><dt>มูลค่าแพ็กเกจเดิมตามวันที่เหลือ</dt><dd data-monthly-result="oldProductDifference"></dd></div>
+              <div><dt>มูลค่าแพ็กเกจใหม่ตามวันที่เหลือ</dt><dd data-monthly-result="newProductDifference"></dd></div>
+              <div><dt>ส่วนต่างก่อน VAT (ใหม่ − เดิม)</dt><dd data-monthly-result="difference"></dd></div>
+              <div><dt>VAT 7% ของส่วนต่าง</dt><dd data-monthly-result="vat"></dd></div>
+              <div class="monthly-net"><dt>ส่วนต่างสุทธิรวม VAT</dt><dd data-monthly-result="net"></dd></div>
+            </dl>
+            <p id="monthlyCreditNote" hidden>ยอดติดลบหมายถึงส่วนต่างเครดิตจากการเปลี่ยนเป็นแพ็กเกจราคาต่ำลง</p>
+          </section>
 
-        <p id="result_dailyPrice"></p>
-        <p id="result_priceDifference"></p>
-
-        <hr />
+          <button type="reset" class="reset">ล้างข้อมูล</button>
+        </form>
+        <p class="monthly-formula">สูตร: [(ราคาใหม่ ÷ 30 × วันที่เหลือ) − (ราคาเดิม ÷ 30 × วันที่เหลือ)] × 1.07</p>
       </article>
+    </main>
 
+    <main id="singlePackageMode" class="container monthly-container" hidden>
       <article class="container-app">
-        <h2>คำนวณราคา Contract</h2>
+        <h1>การคำนวณส่วนต่าง package เดียว</h1>
+        <h2>คำนวณตามวันที่เหลือ</h2>
+        <p class="monthly-description">ใช้ฐานสัญญา 30 วัน แสดงราคาต่อวัน ส่วนต่างก่อน VAT และส่วนต่างรวม VAT 7%</p>
+        <form id="singlePackageForm" novalidate>
+          <label for="singlePackagePrice">ราคาแพ็กเกจต่อเดือน (ก่อน VAT)</label>
+          <input type="number" id="singlePackagePrice" min="0" step="0.01" placeholder="เช่น 700" required />
 
-        <p>Product Price</p>
-        <input
-          type="number"
-          id="productPrice"
-          step="0.01"
-          min="0"
-          placeholder="เช่น 2500"
-        />
+          <label for="singlePackageRemainingDays">จำนวนวันที่เหลือในรอบบิล (0–30 วัน)</label>
+          <input type="number" id="singlePackageRemainingDays" min="0" max="30" step="1" placeholder="เช่น 15" required />
 
-        <p>Number of Months</p>
-        <input
-          type="number"
-          id="numberOfMonths"
-          step="1"
-          min="1"
-          placeholder="เช่น 12"
-        />
+          <button type="submit" class="send">คำนวณส่วนต่าง</button>
+          <p id="singlePackageError" class="error-message" role="alert"></p>
 
-        <button onclick="calculateContract()" class="send">
-          Calculate Contract Price
-        </button>
+          <section id="singlePackageResults" class="monthly-results" aria-live="polite" aria-atomic="true" hidden>
+            <h2>ผลการคำนวณ</h2>
+            <dl>
+              <div><dt>ราคาแพ็กเกจต่อวัน</dt><dd id="singlePackageDailyPrice"></dd></div>
+              <div><dt>ส่วนต่างตามวันที่เหลือ (ก่อน VAT)</dt><dd id="singlePackageDifference"></dd></div>
+              <div class="monthly-net"><dt>ส่วนต่างตามวันที่เหลือ (รวม VAT)</dt><dd id="singlePackageDifferenceWithVat"></dd></div>
+            </dl>
+          </section>
 
-        <p id="result_contractPrice"></p>
-
-        <button onclick="calculateContractTotal()" class="send">
-          Contract Price + Difference
-        </button>
-
-        <p id="result_totalPrice"></p>
-
-        <button class="reset">Reset</button>
+          <button type="reset" class="reset">ล้างข้อมูล</button>
+        </form>
+        <p class="monthly-formula">สูตร: ราคาแพ็กเกจ ÷ 30 × วันที่เหลือ</p>
+        <p class="monthly-formula">ส่วนต่างรวม VAT 7% = ส่วนต่างก่อน VAT × 1.07</p>
       </article>
-    </figure>
+    </main>
 
+    <script src="monthly-calculator.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
