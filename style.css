@@ -50,16 +50,50 @@ body {
   min-height: 100vh;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.mode-selector {
+  width: calc(100% - 40px);
+  max-width: 720px;
+  margin: 32px auto 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+select:focus-visible {
+  outline: 3px solid rgba(251, 101, 20, 0.3);
+  outline-offset: 2px;
+}
+
 /* ==============================
    Layout
 ============================== */
 
 .container {
   width: 100%;
-  min-height: 100vh;
+  min-height: 0;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 25px;
   padding: 48px 20px;
@@ -77,6 +111,66 @@ body {
   border-radius: var(--radius-lg);
 
   box-shadow: var(--shadow-card);
+}
+
+.monthly-container {
+  padding-top: 24px;
+}
+
+.monthly-description {
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.monthly-container .send {
+  width: 100%;
+}
+
+.monthly-results dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.monthly-results dt {
+  color: var(--color-text-muted);
+}
+
+.monthly-results dd {
+  flex-shrink: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.monthly-results .monthly-net {
+  padding: 16px 12px;
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.monthly-net dt {
+  color: inherit;
+  font-weight: 700;
+}
+
+.monthly-formula,
+#monthlyCreditNote {
+  margin-top: 16px;
+  line-height: 1.6;
+  font-size: 0.85rem;
+}
+
+.error-message {
+  color: #b42318;
+  line-height: 1.6;
+}
+
+.error-message:empty {
+  display: none;
 }
 
 /* ==============================
@@ -262,74 +356,6 @@ button:active {
   border-color: #cbd0d8;
 }
 
-/* ==============================
-   Result
-============================== */
-
-#result_dailyPrice,
-#result_priceDifference,
-#result_contractPrice,
-#result_totalPrice {
-  width: 100%;
-
-  min-height: 46px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 12px 14px;
-
-  margin-top: 0;
-  margin-bottom: 10px;
-
-  border: 1px solid var(--color-success-border);
-  border-radius: var(--radius-sm);
-
-  background: var(--color-success-bg);
-
-  color: var(--color-success-text);
-
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-/* ซ่อน result box ถ้ายังไม่มีข้อความ */
-
-#result_dailyPrice:empty,
-#result_priceDifference:empty,
-#result_contractPrice:empty,
-#result_totalPrice:empty {
-  display: none;
-}
-
-/* Total Price เด่นกว่าผลลัพธ์อื่น */
-
-#result_totalPrice:not(:empty) {
-  min-height: 60px;
-
-  border-color: rgba(251, 101, 20, 0.3);
-
-  background: rgba(251, 101, 20, 0.08);
-
-  color: #c2410c;
-
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-/* ==============================
-   Divider
-============================== */
-
-hr {
-  border: none;
-
-  height: 1px;
-
-  margin: 34px 0;
-
-  background: var(--color-border);
-}
 
 /* ==============================
    Mobile
@@ -338,6 +364,7 @@ hr {
 @media (max-width: 640px) {
   .container {
     align-items: flex-start;
+    flex-direction: column;
 
     padding: 20px 12px;
   }
@@ -362,8 +389,14 @@ hr {
     height: 46px;
   }
 
-  button {
+  button,
+  .send {
     width: 100%;
+  }
+
+  .monthly-results dl > div {
+    flex-direction: column;
+    gap: 4px;
   }
 }
 
