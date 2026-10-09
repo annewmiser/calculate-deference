@@ -11,6 +11,7 @@
       <label for="calculationMode">โหมดการคำนวณ</label>
       <select id="calculationMode">
         <option value="monthly">รายเดือน: เปลี่ยนแพ็กเกจ</option>
+        <option value="yearly">รายปี: เปลี่ยนแพ็กเกจ</option>
         <option value="single-package">การคำนวณส่วนต่าง package เดียว</option>
       </select>
     </header>
@@ -53,6 +54,50 @@
       </article>
     </main>
 
+    <main id="yearlyMode" class="container monthly-container" hidden>
+      <article class="container-app">
+        <h1>คำนวณส่วนต่างแพ็กเกจ</h1>
+        <h2>โหมดเปลี่ยนแพ็กเกจรายปี</h2>
+        <p class="monthly-description">คิดราคา 12 เดือน ลด 20% ใช้ฐานเดือนละ 30 วัน และบวก VAT 7% จากส่วนต่าง</p>
+        <form id="yearlyForm" novalidate>
+          <label for="yearlyOldProductPrice">ราคาแพ็กเกจเดิมต่อเดือน (ก่อนส่วนลดและ VAT)</label>
+          <input type="number" id="yearlyOldProductPrice" min="0" step="0.01" placeholder="เช่น 700" required />
+
+          <label for="yearlyNewProductPrice">ราคาแพ็กเกจใหม่ต่อเดือน (ก่อนส่วนลดและ VAT)</label>
+          <input type="number" id="yearlyNewProductPrice" min="0" step="0.01" placeholder="เช่น 1000" required />
+
+          <label for="yearlyRemainingDays">จำนวนวันที่เหลือในสัญญารายปี (0–365 วัน)</label>
+          <input type="number" id="yearlyRemainingDays" min="0" max="365" step="1" placeholder="เช่น 180" required />
+
+          <button type="submit" class="send">คำนวณส่วนต่าง</button>
+          <p id="yearlyError" class="error-message" role="alert"></p>
+
+          <section id="yearlyResults" class="monthly-results" aria-live="polite" aria-atomic="true" hidden>
+            <h2>ผลการคำนวณ</h2>
+            <p>ราคาและมูลค่าด้านล่างหักส่วนลด 20% แล้ว และยังไม่รวม VAT จนถึงบรรทัดส่วนต่างสุทธิ</p>
+            <dl>
+              <div><dt>ราคาแพ็กเกจเดิมต่อปี</dt><dd data-yearly-result="oldYearlyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจใหม่ต่อปี</dt><dd data-yearly-result="newYearlyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจเดิมเฉลี่ยต่อเดือน</dt><dd data-yearly-result="oldMonthlyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจใหม่เฉลี่ยต่อเดือน</dt><dd data-yearly-result="newMonthlyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจเดิมต่อวัน</dt><dd data-yearly-result="oldDailyPrice"></dd></div>
+              <div><dt>ราคาแพ็กเกจใหม่ต่อวัน</dt><dd data-yearly-result="newDailyPrice"></dd></div>
+              <div><dt>มูลค่าแพ็กเกจเดิมตามวันที่เหลือ</dt><dd data-yearly-result="oldProductDifference"></dd></div>
+              <div><dt>มูลค่าแพ็กเกจใหม่ตามวันที่เหลือ</dt><dd data-yearly-result="newProductDifference"></dd></div>
+              <div><dt>ส่วนต่างก่อน VAT (ใหม่ − เดิม)</dt><dd data-yearly-result="difference"></dd></div>
+              <div><dt>VAT 7% ของส่วนต่าง</dt><dd data-yearly-result="vat"></dd></div>
+              <div class="monthly-net"><dt>ส่วนต่างสุทธิรวม VAT</dt><dd data-yearly-result="net"></dd></div>
+            </dl>
+            <p id="yearlyCreditNote" hidden>ยอดติดลบหมายถึงส่วนต่างเครดิตจากการเปลี่ยนเป็นแพ็กเกจราคาต่ำลง</p>
+          </section>
+
+          <button type="reset" class="reset">ล้างข้อมูล</button>
+        </form>
+        <p class="monthly-formula">สูตรของแต่ละแพ็กเกจ: ราคาต่อปี = ราคาต่อเดือน × 12 × 0.80 → เฉลี่ยต่อเดือน = ราคาต่อปี ÷ 12 → ราคาต่อวัน = ราคาเฉลี่ยต่อเดือน ÷ 30 → มูลค่าคงเหลือ = ราคาต่อวัน × วันที่เหลือ</p>
+        <p class="monthly-formula">ส่วนต่างสุทธิรวม VAT = (มูลค่าคงเหลือแพ็กเกจใหม่ − มูลค่าคงเหลือแพ็กเกจเดิม) × 1.07</p>
+      </article>
+    </main>
+
     <main id="singlePackageMode" class="container monthly-container" hidden>
       <article class="container-app">
         <h1>การคำนวณส่วนต่าง package เดียว</h1>
@@ -85,6 +130,7 @@
     </main>
 
     <script src="monthly-calculator.js"></script>
+    <script src="yearly-calculator.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

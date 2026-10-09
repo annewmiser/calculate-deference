@@ -158,7 +158,8 @@ select:focus-visible {
 }
 
 .monthly-formula,
-#monthlyCreditNote {
+#monthlyCreditNote,
+#yearlyCreditNote {
   margin-top: 16px;
   line-height: 1.6;
   font-size: 0.85rem;
